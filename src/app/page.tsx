@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ThemeToggle } from "@/components/docs/theme-toggle";
+import { TopBar } from "@/components/ui/top-bar";
 import {
   BookOpen,
   UserCheck,
@@ -137,19 +137,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Top nav */}
-      <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="h-7 w-7 rounded-lg bg-primary flex items-center justify-center">
-              <Zap className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <Link href="/" className="font-bold text-sm tracking-tight">
-              FlowChat SOP
-            </Link>
-          </div>
-          <ThemeToggle />
-        </div>
-      </header>
+      <TopBar showSignIn={true} />
 
       <main className="mx-auto max-w-6xl px-6 pb-24">
         {/* Hero */}

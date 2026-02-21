@@ -36,6 +36,7 @@ export const useAuthAdmin = create<AuthAdminState>((set) => ({
             const { token } = response.data;
 
             localStorage.setItem('token', token);
+            localStorage.setItem('role', 'admin');
             set({ token, isLoading: false });
 
             // Fetch user profile after login
@@ -56,6 +57,7 @@ export const useAuthAdmin = create<AuthAdminState>((set) => ({
             const { token } = response.data;
 
             localStorage.setItem('token', token);
+            localStorage.setItem('role', 'admin');
             set({ token, isLoading: false });
 
             // Fetch user profile after register
@@ -86,6 +88,7 @@ export const useAuthAdmin = create<AuthAdminState>((set) => ({
 
     logout: () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('role');
         set({ user: null, token: null, error: null });
     },
 

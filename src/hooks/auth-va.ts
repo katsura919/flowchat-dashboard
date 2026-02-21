@@ -37,6 +37,7 @@ export const useAuthVa = create<AuthVaState>((set) => ({
             const { token } = response.data;
 
             localStorage.setItem('token', token);
+            localStorage.setItem('role', 'va');
             set({ token, isLoading: false });
 
             // Fetch user profile after login
@@ -67,6 +68,7 @@ export const useAuthVa = create<AuthVaState>((set) => ({
 
     logout: () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('role');
         set({ user: null, token: null, error: null });
     },
 

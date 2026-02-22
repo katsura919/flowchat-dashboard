@@ -3,7 +3,13 @@
 import { useState } from "react";
 import { PageHeader } from "@/components/docs/page-header";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type HealthStatus = "healthy" | "warning" | "blocked";
 
@@ -39,14 +45,46 @@ export default function ReportPage() {
 
   const [downloading, setDownloading] = useState(false);
 
-  const handleDownload = async () => {
+  const handleExportPdf = async () => {
     setDownloading(true);
-    const [{ downloadPdf }, { ReportPdf }] = await Promise.all([
-      import("@/lib/download-pdf"),
-      import("@/lib/report-pdf"),
-    ]);
-    await downloadPdf(
-      ReportPdf({
+    try {
+      const [{ downloadPdf }, { ReportPdf }] = await Promise.all([
+        import("@/lib/download-pdf"),
+        import("@/lib/report-pdf"),
+      ]);
+      await downloadPdf(
+        ReportPdf({
+          vaName,
+          date,
+          imported,
+          requestsSent,
+          conversationsStarted,
+          nurtureReplies,
+          callsBooked,
+          newReplies,
+          pendingBookings,
+          qualifiedAdded,
+          healthStatus,
+          warnings,
+          actionTaken,
+          topGroup,
+          commonObjection,
+          winningHook,
+          recommendations,
+          blockers,
+        }),
+        "daily-operations-report.pdf",
+      );
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const handleExportExcel = async () => {
+    setDownloading(true);
+    try {
+      const { exportReportToExcel } = await import("@/lib/excel-utils");
+      exportReportToExcel({
         vaName,
         date,
         imported,
@@ -65,10 +103,10 @@ export default function ReportPage() {
         winningHook,
         recommendations,
         blockers,
-      }),
-      "daily-operations-report.pdf",
-    );
-    setDownloading(false);
+      });
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const healthConfig: Record<HealthStatus, { label: string; color: string }> = {
@@ -95,23 +133,35 @@ export default function ReportPage() {
         </div>
       </div>
 
-      {/* <div className="print:hidden mb-6 flex justify-end">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleDownload}
-          disabled={downloading || !vaName.trim() || !date.trim()}
-          className="gap-2"
-          title={
-            !vaName.trim() || !date.trim()
-              ? "VA Name and Date are required"
-              : undefined
-          }
-        >
-          <Download className="h-4 w-4" />
-          {downloading ? "Generating PDF…" : "Download PDF"}
-        </Button>
-      </div> */}
+      <div className="print:hidden mb-6 flex justify-end">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={downloading || !vaName.trim() || !date.trim()}
+              className="gap-2"
+              title={
+                !vaName.trim() || !date.trim()
+                  ? "VA Name and Date are required"
+                  : undefined
+              }
+            >
+              <Download className="h-4 w-4" />
+              {downloading ? "Exporting…" : "Export Report"}
+              <ChevronDown className="h-3 w-3 opacity-50" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuItem onClick={handleExportPdf}>
+              Export to PDF
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleExportExcel}>
+              Export to Excel
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <div className="space-y-6">
         {/* Header */}
@@ -270,11 +320,10 @@ export default function ReportPage() {
                   (s) => (
                     <label
                       key={s}
-                      className={`flex items-center gap-2 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${
-                        healthStatus === s
+                      className={`flex items-center gap-2 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${healthStatus === s
                           ? "border-primary bg-accent"
                           : "hover:bg-muted/40"
-                      }`}
+                        }`}
                     >
                       <input
                         type="radio"
@@ -399,21 +448,33 @@ export default function ReportPage() {
         </div>
 
         <div className="print:hidden flex justify-end">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDownload}
-            disabled={downloading || !vaName.trim() || !date.trim()}
-            className="gap-2"
-            title={
-              !vaName.trim() || !date.trim()
-                ? "VA Name and Date are required"
-                : undefined
-            }
-          >
-            <Download className="h-4 w-4" />
-            {downloading ? "Generating PDF…" : "Download PDF"}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={downloading || !vaName.trim() || !date.trim()}
+                className="gap-2"
+                title={
+                  !vaName.trim() || !date.trim()
+                    ? "VA Name and Date are required"
+                    : undefined
+                }
+              >
+                <Download className="h-4 w-4" />
+                {downloading ? "Exporting…" : "Export Report"}
+                <ChevronDown className="h-3 w-3 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem onClick={handleExportPdf}>
+                Export to PDF
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleExportExcel}>
+                Export to Excel
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>

@@ -5,7 +5,13 @@ import { PageHeader } from "@/components/docs/page-header";
 import { Callout } from "@/components/docs/callout";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const stages = [
   "Stage 1 — Build",
@@ -70,14 +76,45 @@ export default function AuditPage() {
 
   const [downloading, setDownloading] = useState(false);
 
-  const handleDownload = async () => {
+  const handleExportPdf = async () => {
     setDownloading(true);
-    const [{ downloadPdf }, { AuditPdf }] = await Promise.all([
-      import("@/lib/download-pdf"),
-      import("@/lib/audit-pdf"),
-    ]);
-    await downloadPdf(
-      AuditPdf({
+    try {
+      const [{ downloadPdf }, { AuditPdf }] = await Promise.all([
+        import("@/lib/download-pdf"),
+        import("@/lib/audit-pdf"),
+      ]);
+      await downloadPdf(
+        AuditPdf({
+          vaName,
+          weekEnding,
+          selectedStage,
+          imports,
+          requests,
+          acceptanceRate,
+          replyRate,
+          messagesHit,
+          manualReplies,
+          bookingLinks,
+          callsBooked,
+          noShowRate,
+          quality,
+          bottleneck,
+          adjustment,
+          nextWeekGoal,
+          nextFocus,
+        }),
+        "weekly-growth-audit.pdf",
+      );
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const handleExportExcel = async () => {
+    setDownloading(true);
+    try {
+      const { exportAuditToExcel } = await import("@/lib/excel-utils");
+      exportAuditToExcel({
         vaName,
         weekEnding,
         selectedStage,
@@ -95,10 +132,10 @@ export default function AuditPage() {
         adjustment,
         nextWeekGoal,
         nextFocus,
-      }),
-      "weekly-growth-audit.pdf",
-    );
-    setDownloading(false);
+      });
+    } finally {
+      setDownloading(false);
+    }
   };
 
   return (
@@ -114,16 +151,28 @@ export default function AuditPage() {
       </div>
 
       <div className="print:hidden mb-6 flex justify-end">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleDownload}
-          disabled={downloading}
-          className="gap-2"
-        >
-          <Download className="h-4 w-4" />
-          {downloading ? "Generating PDF…" : "Download PDF"}
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={downloading}
+              className="gap-2"
+            >
+              <Download className="h-4 w-4" />
+              {downloading ? "Exporting…" : "Export Audit"}
+              <ChevronDown className="h-3 w-3 opacity-50" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuItem onClick={handleExportPdf}>
+              Export to PDF
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleExportExcel}>
+              Export to Excel
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="space-y-8">
@@ -162,11 +211,10 @@ export default function AuditPage() {
             {stages.map((s) => (
               <label
                 key={s}
-                className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${
-                  selectedStage === s
+                className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${selectedStage === s
                     ? "border-primary bg-accent"
                     : "hover:bg-muted/40"
-                }`}
+                  }`}
               >
                 <input
                   type="radio"
@@ -395,11 +443,10 @@ export default function AuditPage() {
             {focusOptions.map((opt) => (
               <label
                 key={opt}
-                className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${
-                  nextFocus === opt
+                className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${nextFocus === opt
                     ? "border-primary bg-accent"
                     : "hover:bg-muted/40"
-                }`}
+                  }`}
               >
                 <input
                   type="radio"
@@ -423,16 +470,28 @@ export default function AuditPage() {
         </Callout>
 
         <div className="print:hidden flex justify-end">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDownload}
-            disabled={downloading}
-            className="gap-2"
-          >
-            <Download className="h-4 w-4" />
-            {downloading ? "Generating PDF…" : "Download PDF"}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={downloading}
+                className="gap-2"
+              >
+                <Download className="h-4 w-4" />
+                {downloading ? "Exporting…" : "Export Audit"}
+                <ChevronDown className="h-3 w-3 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem onClick={handleExportPdf}>
+                Export to PDF
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleExportExcel}>
+                Export to Excel
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>

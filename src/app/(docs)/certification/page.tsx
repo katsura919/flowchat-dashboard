@@ -4,9 +4,25 @@ import { useState } from "react";
 import { PageHeader } from "@/components/docs/page-header";
 import { Callout } from "@/components/docs/callout";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const phases = [
+interface PhaseItem {
+  id: string;
+  text: string;
+}
+
+interface Phase {
+  id: string;
+  phase: string;
+  label: string;
+  required?: boolean;
+  passMark?: number;
+  items: PhaseItem[];
+}
+
+const phases: Phase[] = [
   {
     id: "technical",
     phase: "Phase 1",
@@ -74,7 +90,10 @@ const phases = [
 ];
 
 export default function CertificationPage() {
+  const [candidateName, setCandidateName] = useState("");
+  const [trainerName, setTrainerName] = useState("");
   const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [downloading, setDownloading] = useState(false);
 
   const toggle = (id: string, val: boolean) =>
     setChecked((p) => ({ ...p, [id]: val }));
@@ -88,6 +107,27 @@ export default function CertificationPage() {
   const commPassed = commCount / commItems.length >= 0.8;
   const graduated = safetyPassed && commPassed;
 
+  const handleDownloadCertificate = async () => {
+    if (!graduated) return;
+    setDownloading(true);
+    try {
+      const [{ downloadPdf }, { CertificatePdf }] = await Promise.all([
+        import("@/lib/download-pdf"),
+        import("@/lib/certificate-pdf"),
+      ]);
+      await downloadPdf(
+        <CertificatePdf
+          candidateName={candidateName}
+          trainerName={trainerName}
+          date={new Date().toISOString()}
+        />,
+        `VA-Certificate-${candidateName.replace(/\s+/g, "-") || "Graduated"}.pdf`
+      );
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   return (
     <div>
       <PageHeader
@@ -96,41 +136,86 @@ export default function CertificationPage() {
         description="Internal use only. Complete all three phases to achieve VA certification. Phase 2 (Safety) requires 100% completion. Phase 3 (Communication) requires 80%."
       />
 
+      <div className="grid gap-6 sm:grid-cols-2 mb-8">
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">
+            Candidate Name
+          </label>
+          <input
+            value={candidateName}
+            onChange={(e) => setCandidateName(e.target.value)}
+            placeholder="Full name of the VA"
+            className="w-full rounded-lg border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">
+            Trainer / Supervisor
+          </label>
+          <input
+            value={trainerName}
+            onChange={(e) => setTrainerName(e.target.value)}
+            placeholder="Name of person certifying"
+            className="w-full rounded-lg border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+        </div>
+      </div>
+
       {/* Graduation status */}
       <div
         className={cn(
-          "mb-8 rounded-lg border p-4 flex items-center gap-4",
+          "mb-8 rounded-lg border p-4 flex items-center justify-between gap-4",
           graduated
             ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-950/30"
             : "border-muted bg-muted/30",
         )}
       >
-        <div
-          className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-sm",
-            graduated
-              ? "bg-emerald-500 text-white"
-              : "bg-muted text-muted-foreground",
-          )}
-        >
-          {graduated ? "✓" : "–"}
-        </div>
-        <div>
-          <p
+        <div className="flex items-center gap-4">
+          <div
             className={cn(
-              "font-semibold text-sm",
+              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-sm",
               graduated
-                ? "text-emerald-700 dark:text-emerald-400"
-                : "text-muted-foreground",
+                ? "bg-emerald-500 text-white"
+                : "bg-muted text-muted-foreground",
             )}
           >
-            {graduated ? "Certification Requirements Met" : "Not Yet Certified"}
-          </p>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Safety: {safetyCount}/{safetyItems.length} (need 100%) &nbsp;·&nbsp;
-            Communication: {commCount}/{commItems.length} (need 4/5 — 80%)
-          </p>
+            {graduated ? "✓" : "–"}
+          </div>
+          <div>
+            <p
+              className={cn(
+                "font-semibold text-sm",
+                graduated
+                  ? "text-emerald-700 dark:text-emerald-400"
+                  : "text-muted-foreground",
+              )}
+            >
+              {graduated ? "Certification Requirements Met" : "Not Yet Certified"}
+            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Safety: {safetyCount}/{safetyItems.length} (need 100%) &nbsp;·&nbsp;
+              Communication: {commCount}/{commItems.length} (need 4/5 — 80%)
+            </p>
+          </div>
         </div>
+
+        {graduated && (
+          <Button
+            size="sm"
+            onClick={handleDownloadCertificate}
+            disabled={downloading || !candidateName.trim()}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
+          >
+            {downloading ? (
+              "Generating…"
+            ) : (
+              <>
+                <Download className="h-4 w-4" />
+                Download Certificate
+              </>
+            )}
+          </Button>
+        )}
       </div>
 
       <div className="space-y-8">
@@ -188,7 +273,7 @@ export default function CertificationPage() {
                     <Checkbox
                       id={item.id}
                       checked={!!checked[item.id]}
-                      onCheckedChange={(val) => toggle(item.id, !!val)}
+                      onCheckedChange={(val: boolean | "indeterminate") => toggle(item.id, !!val)}
                       className="mt-0.5 shrink-0"
                     />
                     <p

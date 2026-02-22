@@ -45,9 +45,19 @@ export default function SetupPage() {
     <div>
       <PageHeader
         tag="VA Setup"
-        title="Pre-Call Setup Protocol"
+        title="VA Onboarding"
         description="Complete every item in this checklist before the client session and before any automation is turned on."
       />
+
+      <section className="mb-10">
+        <div className="relative aspect-video w-full overflow-hidden rounded-xl border bg-muted shadow-sm">
+          <iframe
+            src="https://www.loom.com/embed/acf78665d15d4c77b9d9c958bb3076da"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full border-0"
+          />
+        </div>
+      </section>
 
       <section className="space-y-6">
         <div>

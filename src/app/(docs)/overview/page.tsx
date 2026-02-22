@@ -126,6 +126,16 @@ export default function OverviewPage() {
         </div>
       </section>
 
+      <section className="mt-8">
+        <div className="relative aspect-video w-full overflow-hidden rounded-xl border bg-muted shadow-sm">
+          <iframe
+            src="https://www.loom.com/embed/7e51a49ba76d45359ac7ff000c604368"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full border-0"
+          />
+        </div>
+      </section>
+
       <Callout type="tip" title="Core Principle">
         This system is not spam. Every interaction is human-like, personalized
         outreach. Fully implementable within 30 days when followed consistently.

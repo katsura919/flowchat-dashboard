@@ -17,6 +17,16 @@ export default function Day3Page() {
         read and adjusted by the VA in real time.
       </Callout>
 
+      <section className="mt-8">
+        <div className="relative aspect-video w-full overflow-hidden rounded-xl border bg-muted shadow-sm">
+          <iframe
+            src="https://www.loom.com/embed/fa068ae758f7407f9cb102dbb3245fab"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full border-0"
+          />
+        </div>
+      </section>
+
       <section className="mt-8 space-y-2">
         <h2 className="text-xl font-semibold tracking-tight mb-4">
           Stage-by-Stage Conversation Flow

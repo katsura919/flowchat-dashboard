@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Zap, LayoutDashboard, Users, Settings, ShieldCheck } from "lucide-react";
+import { Zap, LayoutDashboard, Users, Settings, ShieldCheck, BarChart3 } from "lucide-react";
 import { DashboardTopBar } from "@/components/layout/dashboard-top-bar";
 import { AdminGuard } from "@/components/auth/admin-guard";
 
@@ -43,6 +43,13 @@ export default function AdminLayout({
                         >
                             <ShieldCheck className="h-4 w-4" />
                             Certifications
+                        </Link>
+                        <Link
+                            href="/admin/eod-management"
+                            className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
+                        >
+                            <BarChart3 className="h-4 w-4" />
+                            EOD Management
                         </Link>
                         <Link
                             href="/admin/settings"

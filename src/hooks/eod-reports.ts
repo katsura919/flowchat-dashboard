@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from "sonner";
+import api from '@/lib/api';
 
 // --- Interfaces ---
 
@@ -34,80 +35,24 @@ export interface EodReport {
     submittedAt: string;
 }
 
-// --- Dummy Data ---
-
-const DUMMY_REPORTS: EodReport[] = [
-    {
-        _id: "1",
-        vaId: "va-123",
-        date: new Date(Date.now() - 86400000).toISOString(),
-        dailyNumbers: {
-            newLeadsImported: 50,
-            friendRequestsSent: 20,
-            newConversationsStarted: 15,
-            nurtureResponsesSent: 30,
-            callsBooked: 2,
-        },
-        pipelineMovement: {
-            newReplies: 10,
-            pendingBookings: 5,
-            qualifiedAdded: 8,
-        },
-        accountHealth: {
-            status: "healthy",
-            warnings: null,
-            actionTaken: null,
-        },
-        insights: {
-            topGroup: "SaaS Founders",
-            commonObjection: "Price too high",
-            winningHook: "Hey, I saw your post about scaling...",
-            recommendations: "Focus on smaller groups",
-        },
-        blockers: null,
-        submittedAt: new Date(Date.now() - 86400000).toISOString(),
-    },
-    {
-        _id: "2",
-        vaId: "va-123",
-        date: new Date(Date.now() - 172800000).toISOString(),
-        dailyNumbers: {
-            newLeadsImported: 45,
-            friendRequestsSent: 18,
-            newConversationsStarted: 12,
-            nurtureResponsesSent: 25,
-            callsBooked: 1,
-        },
-        pipelineMovement: {
-            newReplies: 8,
-            pendingBookings: 3,
-            qualifiedAdded: 6,
-        },
-        accountHealth: {
-            status: "warning",
-            warnings: "Account flagged for speed",
-            actionTaken: "Slowed down interactions",
-        },
-        insights: {
-            topGroup: "E-com Owners",
-            commonObjection: "Not interested",
-            winningHook: "I love your product design!",
-            recommendations: "Try different hook",
-        },
-        blockers: "Limited by daily limits",
-        submittedAt: new Date(Date.now() - 172800000).toISOString(),
-    }
-];
-
 // --- Hooks ---
 
 export const useEodReports = () => {
     return useQuery({
         queryKey: ['eod-reports'],
         queryFn: async () => {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return DUMMY_REPORTS;
+            const response = await api.get('/eod');
+            return response.data.data as EodReport[];
+        }
+    });
+};
+
+export const useLatestEodReport = () => {
+    return useQuery({
+        queryKey: ['eod-reports', 'latest'],
+        queryFn: async () => {
+            const response = await api.get('/eod/latest');
+            return response.data.data as EodReport;
         }
     });
 };
@@ -117,17 +62,17 @@ export const useSubmitEod = () => {
 
     return useMutation({
         mutationFn: async (report: Omit<EodReport, "_id" | "vaId" | "submittedAt">) => {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            console.log("Submitting report:", report);
-            return { success: true };
+            const response = await api.post('/eod', report);
+            return response.data;
         },
         onSuccess: () => {
             toast.success("EOD Report submitted successfully!");
             queryClient.invalidateQueries({ queryKey: ['eod-reports'] });
+            queryClient.invalidateQueries({ queryKey: ['eod-reports', 'latest'] });
         },
         onError: (error: any) => {
-            toast.error(error.message || "Failed to submit EOD report");
+            const message = error.response?.data?.message || error.message || "Failed to submit EOD report";
+            toast.error(message);
         }
     });
 };

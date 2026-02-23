@@ -6,7 +6,7 @@ const objections = [
   {
     trigger: '"What\'s the price?"',
     pivot:
-      "\"Great question! It depends on a few factors, and I'd hate to give you the wrong number. That's exactly what the quick chat is for — to see if we can even help first. Does [Day] or [Day] work better?\"",
+      "\"Great question! It depends on a few factors, and I'd hate to give you the wrong number. That's exactly what the quick chat is for, to see if we can even help first. Does [Day] or [Day] work better?\"",
     note: null,
   },
   {
@@ -37,7 +37,7 @@ export default function ScriptsPage() {
       <PageHeader
         tag="Playbooks"
         title="Script Playbook"
-        description="Verbatim language for handling the most common objections, transitions, and pivots. Use these as frameworks — always personalize for the specific lead and conversation."
+        description="Verbatim language for handling the most common objections, transitions, and pivots. Use these as frameworks, always personalize for the specific lead and conversation."
       />
 
       {/* Tone Rules */}
@@ -50,7 +50,7 @@ export default function ScriptsPage() {
             {
               rule: "Casual and professional",
               detail:
-                "Sound like a real person having a conversation — not a corporate email.",
+                "Sound like a real person having a conversation, not a corporate email.",
             },
             {
               rule: "Use their name",
@@ -148,7 +148,7 @@ export default function ScriptsPage() {
         </h2>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
           Use these when moving a qualified lead toward the booking link. Pick
-          the style that fits the lead&apos;s energy — not a formula, a judgment
+          the style that fits the lead&apos;s energy, not a formula, a judgment
           call.
         </p>
 
@@ -192,7 +192,7 @@ export default function ScriptsPage() {
           </p>
           <p className="text-xs text-muted-foreground mt-2">
             Always capture email or phone immediately after sending the link.
-            Check the calendar 2 hours later — if they have not booked, send one
+            Check the calendar 2 hours later, if they have not booked, send one
             gentle reminder.
           </p>
         </div>
@@ -207,8 +207,8 @@ export default function ScriptsPage() {
           dont={[
             "Argue with a lead — ever",
             "Send the booking link twice without a response in between",
-            "Answer deep technical or product questions in DMs — that is what the call is for",
-            "Chase clearly unqualified leads — archive and move on",
+            "Answer deep technical or product questions in DMs, that is what the call is for",
+            "Chase clearly unqualified leads, archive and move on",
             "Send a wall of text in a single message",
             "Use corporate language or buzzwords",
           ]}

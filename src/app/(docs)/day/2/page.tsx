@@ -58,7 +58,7 @@ export default function Day2Page() {
               </li>
               <li className="flex gap-2">
                 <span className="text-primary font-bold shrink-0">›</span>{" "}
-                Monitor lead quality — are replies relevant?
+                Monitor lead quality, are replies relevant?
               </li>
               <li className="flex gap-2">
                 <span className="text-primary font-bold shrink-0">›</span>{" "}
@@ -157,15 +157,15 @@ export default function Day2Page() {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <span className="font-bold text-red-500">No</span>
-                  <span className="text-muted-foreground/50">—</span>
+                  <span className="text-muted-foreground/50"></span>
                   <span>
-                    Not accepted — removed after 3 weeks automatically
+                    Not accepted, removed after 3 weeks
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <span className="font-bold text-emerald-600">Yes</span>
-                  <span className="text-muted-foreground/50">—</span>
-                  <span>Accepted — first message is sent</span>
+                  <span className="text-muted-foreground/50"></span>
+                  <span>Accepted, first message is sent</span>
                 </div>
               </div>
             </div>
@@ -176,13 +176,13 @@ export default function Day2Page() {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <span className="font-bold text-red-500">No</span>
-                  <span className="text-muted-foreground/50">—</span>
-                  <span>No reply — lead is removed from active pipeline</span>
+                  <span className="text-muted-foreground/50"></span>
+                  <span>No reply, lead is removed from active pipeline</span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <span className="font-bold text-emerald-600">Yes</span>
-                  <span className="text-muted-foreground/50">—</span>
-                  <span>Replied — move forward to Stage 07</span>
+                  <span className="text-muted-foreground/50"></span>
+                  <span>Replied, move forward to Stage 07</span>
                 </div>
               </div>
             </div>

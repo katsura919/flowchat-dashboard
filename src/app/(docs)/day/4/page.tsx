@@ -74,7 +74,7 @@ export default function Day4Page() {
               {
                 check: "Automation triggers set",
                 detail:
-                  "Messages fire based on specific actions — friend accepted, reply received, tag applied.",
+                  "Messages fire based on specific actions, friend accepted, reply received, tag applied.",
               },
               {
                 check: "Logical progression",
@@ -191,7 +191,7 @@ export default function Day4Page() {
 
           <Callout type="tip" title="Scaling Principle">
             More leads follow the same structure. The pipeline does not change
-            when volume increases — only the inputs do. Keep the structure
+            when volume increases, only the inputs do. Keep the structure
             clean.
           </Callout>
         </div>

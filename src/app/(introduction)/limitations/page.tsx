@@ -22,7 +22,7 @@ const thresholds = [
 const auditChecks = [
   {
     label: "Tone Check",
-    desc: "Does the VA sound like the client — or like a robot? Every message should feel like it came from a real person who knows the business.",
+    desc: "Does the VA sound like the client? or like a robot? Every message should feel like it came from a real person who knows the business.",
   },
   {
     label: "Speed-to-Lead",
@@ -40,7 +40,7 @@ export default function LimitationsPage() {
       <PageHeader
         tag="Getting Started"
         title="Platform Limits & Safety"
-        description="FlowChat operates inside Facebook and other social platforms. Understanding their rules is not optional — it is the foundation of a scalable, sustainable operation."
+        description="FlowChat operates inside Facebook and other social platforms. Understanding their rules is not optional, it is the foundation of a scalable, sustainable operation."
       />
 
       <section className="space-y-10">
@@ -49,7 +49,7 @@ export default function LimitationsPage() {
           <p className="text-sm text-muted-foreground leading-relaxed">
             Social platforms use automated systems to detect high-volume,
             repetitive, or suspicious activity. A VA who ignores these limits
-            does not just risk a temporary block — they risk the entire account,
+            does not just risk a temporary block, they risk the entire account,
             including all existing conversations and leads.
           </p>
         </div>
@@ -107,7 +107,7 @@ export default function LimitationsPage() {
           <Callout type="danger" title="Red Flag Rule">
             If you receive a &ldquo;Please slow down&rdquo; notification from
             Facebook, stop all outbound activity immediately. Wait 24 full hours
-            before resuming. Notify the client right away — do not wait until
+            before resuming. Notify the client right away, do not wait until
             the daily report.
           </Callout>
         </div>
@@ -169,7 +169,7 @@ export default function LimitationsPage() {
           <p className="text-xs text-muted-foreground mb-4">Run every Friday</p>
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
             Every Friday, review 10 random conversations from the current week.
-            This is a quality control check — not a performance review. The goal
+            This is a quality control check,  not a performance review. The goal
             is to catch patterns before they become problems.
           </p>
 

@@ -8,7 +8,7 @@ export default function Day3Page() {
       <PageHeader
         day={3}
         title="Manual Messaging & Nurturing"
-        description="Automation reduces workload. Conversion requires human skill. Day 3 covers everything that happens once a lead replies — from first response through booking a call."
+        description="Automation reduces workload. Conversion requires human skill. Day 3 covers everything that happens once a lead replies from first response through booking a call."
       />
 
       <Callout type="info" title="The VA's Most Important Skill">
@@ -33,7 +33,7 @@ export default function Day3Page() {
         </h2>
         <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
           Once a lead replies to the opening message, the VA takes full manual
-          control. Each stage has a clear goal. Do not skip stages — each one
+          control. Each stage has a clear goal. Do not skip stages, each one
           qualifies the lead further before investing more time.
         </p>
 
@@ -49,7 +49,7 @@ export default function Day3Page() {
           number={8}
           label="Nurture Questions Sent"
           systemAction="VA has initiated the nurture sequence. System flags lead as active."
-          vaTask="Ask 2–3 targeted qualifying questions. Identify the lead's pain points. Confirm their level of interest. Keep the conversation natural — this is not an interrogation."
+          vaTask="Ask 2–3 targeted qualifying questions. Identify the lead's pain points. Confirm their level of interest. Keep the conversation natural, this is not an interrogation."
           outcome="If interest is confirmed, move to Stage 09. If the lead goes cold, do not chase excessively."
         />
 
@@ -110,14 +110,14 @@ export default function Day3Page() {
               label: "The Value Bump",
               timing: "After 48 hours of silence",
               action:
-                "Send a non-salesy resource — a case study, a stat, or a genuinely helpful tip relevant to their situation. No pitch. No ask. Just value.",
+                "Send a non-salesy resource, a case study, a stat, or a genuinely helpful tip relevant to their situation. No pitch. No ask. Just value.",
             },
             {
               step: "Step 2",
               label: "The Break-Up Message",
               timing: "After 7 days of silence",
               action:
-                "\"Hey [Name], assuming this isn't a priority right now. I'll take you off my follow-up list — but reach out if things change!\"",
+                "\"Hey [Name], assuming this isn't a priority right now. I'll take you off my follow-up list, but reach out if things change!\"",
             },
             {
               step: "Step 3",
@@ -172,13 +172,13 @@ export default function Day3Page() {
               step: "2",
               label: "The Grab",
               detail:
-                "\"I'll drop the link here — but what's your best email? I'll send a calendar invite so we don't waste your time.\" Collect contact details immediately.",
+                "\"I'll drop the link here, but what's your best email? I'll send a calendar invite so we don't waste your time.\" Collect contact details immediately.",
             },
             {
               step: "3",
               label: "Manual Sync Check",
               detail:
-                "Check the calendar 2 hours later. If they have not booked, send one gentle reminder — not a sales pitch.",
+                "Check the calendar 2 hours later. If they have not booked, send one gentle reminder, not a sales pitch.",
             },
           ].map((s) => (
             <div

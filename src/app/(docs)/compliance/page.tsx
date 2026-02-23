@@ -24,8 +24,7 @@ export default function CompliancePage() {
           </h2>
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
             Facebook imposes daily and weekly limits on friend requests.
-            Exceeding these — or accumulating a low acceptance rate — triggers
-            automated restrictions.
+            Exceeding these or accumulating a low acceptance rate triggers automated restrictions.
           </p>
 
           <Checklist
@@ -33,7 +32,7 @@ export default function CompliancePage() {
               "Send friend requests gradually, not in bulk",
               "Monitor acceptance rate weekly",
               "Remove pending requests after 3 weeks (set up the automatic rule)",
-              "Keep acceptance rate healthy — aim for above 20%",
+              "Keep acceptance rate healthy, aim for above 20%",
               "Change targeting audience if acceptance rate keeps dropping",
             ]}
             dont={[
@@ -84,7 +83,7 @@ export default function CompliancePage() {
               <li>Reduce daily messaging activity for 3–5 days</li>
               <li>Rewrite scripts before restarting</li>
               <li>
-                Restart gradually — do not return to previous volume right away
+                Restart gradually, do not return to previous volume right away
               </li>
             </ol>
           </div>

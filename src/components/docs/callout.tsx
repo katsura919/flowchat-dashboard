@@ -43,7 +43,7 @@ const config: Record<
   tip: {
     icon: <Lightbulb className="h-4 w-4 shrink-0 mt-0.5" />,
     border: "border-emerald-500",
-    bg: "bg-emerald-50 dark:bg-emerald-950/30",
+    bg: "bg-emerald-950/30",
     iconColor: "text-emerald-600 dark:text-emerald-400",
     defaultTitle: "Key Principle",
   },
@@ -64,7 +64,7 @@ export function Callout({ type = "info", title, children }: CalloutProps) {
       <span className={cn(iconColor)}>{icon}</span>
       <div className="flex-1 text-sm leading-relaxed">
         <p className={cn("mb-1 font-semibold", iconColor)}>{label}</p>
-        <div className="text-foreground/80">{children}</div>
+        <div className="text-foreground">{children}</div>
       </div>
     </div>
   );

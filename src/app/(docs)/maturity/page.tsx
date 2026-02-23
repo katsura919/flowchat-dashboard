@@ -40,7 +40,7 @@ const stages = [
       { action: "Daily Imports", value: "150–300 leads" },
       { action: "Friend Requests", value: "15/day (warm accounts only)" },
       { action: "Initial Messages", value: "Automated after acceptance" },
-      { action: "Manual Replies", value: "100% of inbound — no exceptions" },
+      { action: "Manual Replies", value: "100% of inbound, no exceptions" },
       { action: "Booking Links", value: "Begin testing" },
     ],
     focus: [
@@ -80,7 +80,7 @@ const stages = [
     gates: [
       "3+ calls booked weekly",
       "No safety warnings in the last 7 days",
-      "Quality conversations maintained — not just volume",
+      "Quality conversations maintained, not just volume",
     ],
     gateLabel: "Scale input further only if all are true:",
     gateType: "warning" as const,
@@ -279,7 +279,7 @@ export default function MaturityPage() {
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
           Before increasing volume at any stage, all four conditions must be
           confirmed. If any single condition fails, drop one stage lower
-          immediately — do not try to push through.
+          immediately, do not try to push through.
         </p>
         <div className="space-y-2.5">
           {safetyLocks.map((lock, i) => (
@@ -287,7 +287,6 @@ export default function MaturityPage() {
               key={i}
               className="flex items-center gap-3 rounded-lg border p-3.5"
             >
-              <div className="h-4 w-4 shrink-0 rounded border-2 border-muted-foreground/40" />
               <p className="text-sm text-foreground">{lock}</p>
             </div>
           ))}

@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -48,6 +49,7 @@ export default function RootLayout({
           <QueryProvider>
             <TooltipProvider>{children}</TooltipProvider>
           </QueryProvider>
+          <Toaster richColors/>
         </ThemeProvider>
       </body>
     </html>

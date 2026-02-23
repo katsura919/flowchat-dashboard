@@ -22,7 +22,7 @@ export const navConfig: NavGroup[] = [
     items: [{ title: "Overview & Purpose", href: "/overview" }],
   },
   {
-    label: "VA Setup",
+    label: "VA Readiness",
     items: [
       { title: "Pre-Call Protocol", href: "/setup" },
       { title: "Compliance & Limits", href: "/compliance" },
@@ -31,10 +31,10 @@ export const navConfig: NavGroup[] = [
   {
     label: "Daily Walkthrough",
     items: [
-      { title: "Day 1 — Overview & Strategy", href: "/day/1" },
-      { title: "Day 2 — Lead Import & Logic", href: "/day/2" },
-      { title: "Day 3 — Messaging & Nurturing", href: "/day/3" },
-      { title: "Day 4 — Automation & Scaling", href: "/day/4" },
+      { title: "Day 1 Overview & Strategy", href: "/day/1" },
+      { title: "Day 2 Lead Import & Logic", href: "/day/2" },
+      { title: "Day 3 Messaging & Nurturing", href: "/day/3" },
+      { title: "Day 4 Automation & Scaling", href: "/day/4" },
     ],
   },
   {
@@ -49,6 +49,7 @@ export const navConfig: NavGroup[] = [
     items: [
       { title: "Script Playbook", href: "/scripts" },
       { title: "Daily Operations Report", href: "/report" },
+      { title: "Lead Imports", href: "/lead-imports" },
     ],
   },
   {

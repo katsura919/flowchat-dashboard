@@ -50,7 +50,7 @@ const rhythm = [
     tasks: [
       "Clear out stale or unresponsive leads from the active pipeline",
       "Update the Tracking Sheet with today's activity",
-      "Report daily KPIs to the client — acceptance rate, replies, bookings",
+      "Report daily KPIs to the client, acceptance rate, replies, bookings",
     ],
   },
 ];
@@ -80,7 +80,7 @@ export default function VaRolePage() {
       <PageHeader
         tag="Getting Started"
         title="VA Role & Daily Rhythm"
-        description="The VA is not just sending messages. The VA is managing a lead pipeline — and a client relationship — every single day."
+        description="The VA is not just sending messages. The VA is managing a lead pipeline and a client relationship every single day."
       />
 
       <section className="space-y-10">
@@ -151,8 +151,8 @@ export default function VaRolePage() {
 
           <Callout type="info" title="Why This Structure Matters">
             The 30-60-90 rhythm prevents inbox pile-ups, ensures lead generation
-            happens daily, and keeps the client informed. Skipping any block —
-            especially data hygiene — compounds problems within a week.
+            happens daily, and keeps the client informed. Skipping any block,
+            especially data hygiene, compounds problems within a week.
           </Callout>
         </div>
 
@@ -182,8 +182,7 @@ export default function VaRolePage() {
 
           <Callout type="tip" title="The Core Distinction">
             Automation fills the pipeline. Human communication is the conversion
-            mechanism. The VA&apos;s technical setup creates the opportunity —
-            the VA&apos;s conversational skill closes it.
+            mechanism. The VA&apos;s technical setup creates the opportunity, the VA&apos;s conversational skill closes it.
           </Callout>
         </div>
       </section>

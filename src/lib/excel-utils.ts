@@ -85,3 +85,17 @@ export function exportReportToExcel(data: any) {
 
     downloadExcel([row], "daily-operations-report.xlsx", "Report");
 }
+
+/**
+ * Specifically formats Lead Imports data for Excel export.
+ */
+export function exportLeadImportsToExcel(data: { name: string; status: string; groups: any[] }) {
+    const rows = data.groups.map(group => ({
+        "Name": data.name,
+        "Overall Status": data.status,
+        "Group Name": group.name,
+        "Joined": group.joined ? "Yes" : "No"
+    }));
+
+    downloadExcel(rows, "lead-imports.xlsx", "Leads");
+}

@@ -20,7 +20,6 @@
 | `training_progress` | VA self-reports module completion (17 modules)       |
 | `certifications`    | Admin-reviewed 3-phase certification checklist       |
 | `eod_reports`       | Daily operations report — one per working day per VA |
-| `weekly_audits`     | Friday pipeline audit — one per week per VA          |
 
 ---
 
@@ -251,57 +250,12 @@ Append-only. One document per submission.
 
 ---
 
-## 6. `weekly_audits`
-
-Append-only. One document per submission. Submitted every Friday.
-**Blocked if `vas.isCertified !== true`.**
-
-```js
-{
-  _id:   ObjectId,
-  vaId:  ObjectId, // ref: vas
-
-  weekEnding:   Date,
-  currentStage: String, // enum: 'Stage 1 — Build' | 'Stage 2 — Scale' | 'Stage 3 — Invite' | 'Stage 4 — Optimize'
-
-  kpis: {
-    leadsImported:       Number,
-    friendRequestsSent:  Number,
-    messagesHit:         Number,
-    manualReplies:       Number,
-    bookingLinksSent:    Number,
-    callsBooked:         Number,
-    acceptanceRate:      String,  // e.g. '34%'
-    replyRate:           String,
-    noShowRate:          String
-  },
-
-  qualityChecklist: {
-    audienceIntegrity:  Boolean,
-    messagingSequence:  Boolean,
-    doubleTap:          Boolean,
-    followUps:          Boolean
-  },
-
-  qualityScore:   Number,  // 0–4, count of true values in qualityChecklist
-
-  bottleneck:       String,
-  adjustmentMade:   String,
-  nextWeekGoal:     String,
-  nextWeekFocus:    String,
-
-  submittedAt:  Date  // auto-set on create
-}
-```
-
----
-
 ## Key Business Rules
 
 1. **Admin creates VA** → backend auto-creates `training_progress` and `certifications` documents for that VA
 2. **VA marks module complete** → `completedCount` and `progressPercent` recalculated; `vas.trainingStatus` updated to `in_progress` or `completed`
 3. **Admin checks certification item** → `completedCount` updated for that phase; `isPassed` recalculated; if `phase2.isPassed && phase3.isPassed` → `isCertified = true`, `certifiedAt` stamped, `vas.isCertified` updated
-4. **VA submits EOD/Audit while `isCertified === false`** → `403 Forbidden`
+4. **VA submits EOD report while `isCertified === false`** → `403 Forbidden`
 5. **One EOD report per VA per day** — duplicate `(vaId, date)` returns `409 Conflict`
 
 ---
@@ -320,12 +274,9 @@ Append-only. One document per submission. Submitted every Friday.
 | GET    | `/api/admin/vas/:id/certification`                            | Admin          | View VA certification           |
 | PATCH  | `/api/admin/vas/:id/certification/phase/:phase/items/:itemId` | Admin          | Check/uncheck cert item         |
 | GET    | `/api/admin/vas/:id/eod-reports`                              | Admin          | List VA's EOD reports           |
-| GET    | `/api/admin/vas/:id/weekly-audits`                            | Admin          | List VA's weekly audits         |
 | GET    | `/api/va/me`                                                  | VA             | Get own profile                 |
 | GET    | `/api/va/me/training`                                         | VA             | Get own training progress       |
 | PATCH  | `/api/va/me/training/:slug`                                   | VA             | Mark module complete/incomplete |
 | GET    | `/api/va/me/certification`                                    | VA             | View own certification status   |
 | POST   | `/api/va/me/eod-reports`                                      | VA (certified) | Submit EOD report               |
 | GET    | `/api/va/me/eod-reports`                                      | VA             | List own EOD reports            |
-| POST   | `/api/va/me/weekly-audits`                                    | VA (certified) | Submit weekly audit             |
-| GET    | `/api/va/me/weekly-audits`                                    | VA             | List own weekly audits          |

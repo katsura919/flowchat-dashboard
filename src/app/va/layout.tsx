@@ -38,6 +38,13 @@ export default function VALayout({
                             My Tasks
                         </Link>
                         <Link
+                            href="/va/eod"
+                            className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
+                        >
+                            <ClipboardList className="h-4 w-4" />
+                            EOD Reports
+                        </Link>
+                        <Link
                             href="/va/training"
                             className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
                         >

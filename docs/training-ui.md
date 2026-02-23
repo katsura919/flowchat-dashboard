@@ -1,43 +1,76 @@
-# UI Design Plan — Training Progress
+# Training Progress & Certification System
 
-The Training UI tracks the VA's journey through the 17 core modules. It should feel rewarding and organized.
+This document outlines the architecture, data flow, and API implementation for the VA Training Progress and Certification feature.
 
-## UI Components
+## 1. Overview
+The Training System allows Virtual Assistants (VAs) to track their progress through 17 core modules and 3 certification phases. It provides a premium, rewarding UI that visualizes their journey toward becoming a certified FlowChat professional.
 
-### 1. Progress Overview
-- **Visual**: Large circular or linear progress bar.
-- **Metrics**: "X / 17 Modules Completed" and "Y% Certification Ready".
-- **Status Badge**: Shows `trainingStatus` (Not Started, In Progress, Completed).
+## 2. UI Components (Frontend)
 
-### 2. Module Roadmap
-A vertical or grid-based list of modules grouped by their category (Getting Started, Client Walkthrough, etc.).
+### `TrainingProgressOverview`
+- Displays overall training status (`not_started`, `in_progress`, `completed`).
+- Shows numerical progress (e.g., "5/17 modules completed").
+- Features a visual progress bar and a certification badge.
 
-- **Module Item**:
-  - Module Title & Group Label.
-  - Status Indicator (Checkbox or Badge).
-  - "View SOP" Link: Opens the corresponding documentation page.
-  - "Mark as Complete" Toggle: Only active if they are on the page or have visited it.
+### `ModuleRoadmap`
+- A categorized list of 17 modules divided into groups (Getting Started, Client Walkthrough, Operations, etc.).
+- Allows VAs to toggle modules as "Done".
+- Provides direct links to **SOPs** for each module.
+- Uses **Static SOP Mapping**: SOP links are managed on the frontend for speed and maintainability.
 
-### 3. Certification Dashboard
-A separate section for the 3-phase certification items (Phase 1: Technical, Phase 2: Safety, Phase 3: Communication).
+### `CertificationDashboard`
+- Visualizes the 3-phase certification process.
+- **Phase 1**: Assessment & Review.
+- **Phase 2**: Operational Proficiency (Requires 100% completion).
+- **Phase 3**: Final Review (Requires 4/5 items).
+- Automatically updates certification status based on phase results.
 
-- **Items**: Read-only for the VA (since these are checked by the Admin).
-- **Visual**: Checkmarks for items already passed by the Admin.
-- **Pass Flags**: "Phase 2 Passed (Required)", "Phase 3 Passed (Required)".
+## 3. Data Architecture
 
-## API Requirements
+### Mapping & Slugs
+Each module is uniquely identified by a **slug** (e.g., `m1`, `m2`, ..., `m17`). This slug is used to:
+1. Map to static SOP links on the frontend.
+2. Identify which module to update in the backend database.
+3. Ensure consistent ordering (`order` field in schema).
 
-### VA Role
-- **GET** `/api/va/me/training`
-  - Fetch the `training_progress` document for the logged-in VA.
-- **PATCH** `/api/va/me/training/:slug`
-  - Update the `completed` status for a specific module.
-  - Backend should automatically update `completedCount` and `progressPercent`.
-- **GET** `/api/va/me/certification`
-  - View current certification items and overall `isCertified` status.
+### Auto-Seeding
+When a VA visits the training page for the first time, the backend automatically seeds their progress record with the default 17 modules. This removes the need for manual setup by administrators.
 
-### Admin Role
-- **GET** `/api/admin/vas/:id/training`
-  - Monitor VA progress.
-- **PATCH** `/api/admin/vas/:id/certification/phase/:phase/items/:itemId`
-  - The tool the Admin uses during a review session to check/uncheck items.
+### VA Model Integration
+The VA's overall `trainingStatus` is automatically kept in sync.
+- 0 modules = `not_started`
+- >0 but <17 = `in_progress`
+- 17 modules = `completed`
+
+## 4. API Reference (Backend)
+
+### `GET /api/va/training`
+- **Description**: Fetches the logged-in VA's training progress.
+- **Auto-Seeding**: Creates the default profile if none exists.
+- **Response**: `ITrainingProgress` object containing the `modules` array and stats.
+
+### `PATCH /api/va/training/:slug`
+- **Description**: Updates the completion status of a specific module.
+- **Payload**: `{ "completed": boolean }`
+- **Reaction**: Triggers a rebuild of `completedCount` and `progressPercent` via Mongoose pre-save hooks.
+
+### `GET /api/va/training/certification`
+- **Description**: Fetches the VA's certification status and phase details.
+
+## 5. Frontend Integration (TanStack Query)
+
+The frontend uses specialized hooks in `src/hooks/training.ts`:
+- **`useTrainingProgress`**: For fetching and caching module data.
+- **`useUpdateModuleStatus`**: For optimistic-ready updates and cache invalidation.
+- **`useCertification`**: For fetching certification-specific data.
+
+### Static SOP Management
+SOP links are defined in the `SOP_LINKS` constant within `src/hooks/training.ts`. To update a link, simply modify the mapping there.
+
+```typescript
+export const SOP_LINKS: Record<string, string> = {
+    'm1': '/overview',
+    'm2': '/va-role',
+    // ...
+};
+```
